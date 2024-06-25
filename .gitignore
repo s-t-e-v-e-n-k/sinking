@@ -1,2 +1,5 @@
-dist
-venv
+dist/
+venv/
+.tox/
+__pycache__/
+.coverage
