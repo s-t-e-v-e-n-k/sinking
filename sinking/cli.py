@@ -108,7 +108,7 @@ class Copier:
                 f"[{count}/{len(self.sources)}]"
             )
             if not self.options.no_act:
-                shutil.copy(source.path, source.destination)
+                shutil.copy(source.path, source.destination / source.name)
 
 
 def main() -> int:

@@ -73,6 +73,20 @@ class TestCopy(unittest.TestCase):
         c.copy()
         self.assertEqual([s.path for s in c.sources], [s.path])
 
+    def test_copy_with_rename_acting(self):
+        self.options.no_act = False
+        name = "v5623jgjf"
+        dirname = "Bar.S07E07"
+        tmpname = "tmp.n5672fbg"
+        _ = create_file_in_dir(self.options.source, name, dirname)
+        _ = create_file_in_dir(
+            self.options.destination, "Bar.S07E01", tmpname
+        )
+        c = Copier()
+        c.copy()
+        newfile = self.options.destination / tmpname / f"{dirname}.bar"
+        self.assertTrue(newfile.is_file())
+
     def test_copy_path_exists(self):
         self.options.no_act = False
         name = "Foo.Bar.S01E04.Baz"

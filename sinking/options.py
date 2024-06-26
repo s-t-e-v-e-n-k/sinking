@@ -1,6 +1,3 @@
-import pathlib
-
-
 class Options:
     def __new__(cls):
         if not hasattr(cls, "instance"):
