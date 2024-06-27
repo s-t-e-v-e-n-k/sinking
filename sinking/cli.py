@@ -2,7 +2,12 @@ import argparse
 import logging
 import pathlib
 import shutil
-from collections.abc import Generator
+import sys
+
+if sys.version_info >= (3, 9):  # pragma: no cover
+    from collections.abc import Generator
+else:  # pragma: no cover
+    from typing import Generator
 
 from . import __version__
 from .destination import DestinationMatcher
