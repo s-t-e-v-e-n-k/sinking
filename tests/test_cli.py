@@ -54,7 +54,7 @@ class TestCopy(unittest.TestCase):
     def test_copy_empty_dir(self):
         c = Copier()
         c.copy()
-        self.assertEqual(c.sources, [])
+        self.assertEqual(list(c.sources), [])
 
     def test_copy_no_rename(self):
         name = "Foo.Bar.S01E04.Baz"
@@ -94,11 +94,13 @@ class TestCopy(unittest.TestCase):
         s = SourceFile(filename)
         c = Copier()
         c.copy()
-        sources = c.sources
-        self.assertEqual([s.path for s in sources], [s.path])
         with self.assertLogs(None, level=logging.DEBUG) as cm:
-            c.match()
-        self.assertEqual(cm.output, [f"DEBUG:root:{s.name} already exists"])
+            c.copy()
+        output = [
+            f"DEBUG:root:Considering {filename}",
+            f"DEBUG:root:{s.name} already exists",
+        ]
+        self.assertEqual(cm.output, output)
 
     def test_logging(self):
         name = "Quux.S04E03"
@@ -123,4 +125,4 @@ class TestCopy(unittest.TestCase):
         _ = create_file_in_dir(self.options.source, f"{name}.sample", name)
         c = Copier()
         c.copy()
-        self.assertEqual(c.sources, [])
+        self.assertEqual(list(c.sources), [])

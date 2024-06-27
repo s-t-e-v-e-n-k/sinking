@@ -2,6 +2,7 @@ import argparse
 import logging
 import pathlib
 import shutil
+from collections.abc import Generator
 
 from . import __version__
 from .destination import DestinationMatcher
@@ -76,36 +77,31 @@ def parser() -> argparse.ArgumentParser:
 class Copier:
     def __init__(self) -> None:
         self.options = Options()
-        self.sources: list[SourceFile] = []
         self.dm = DestinationMatcher()
 
-    def find(self) -> None:
+    @property
+    def sources(self) -> Generator[SourceFile, None, None]:
         for path in self.options.source.rglob(self.options.pattern):
             logging.debug(f"Considering {path}")
             s = SourceFile(path)
             if s.excluded:
                 logging.debug("\tExcluded")
                 continue
-            self.sources.append(s)
-
-    def match(self) -> None:
-        for s in self.sources:
-            destdir = self.dm.match(s.pattern)
-            if (destdir / s.name).exists():
+            s.destination = self.dm.match(s.pattern)
+            if (s.destination / s.name).exists():
                 logging.debug(f"{s.name} already exists")
                 continue
-            s.destination = destdir
             logging.debug(
                 f"Setting destination of {s.name} to {s.destination}"
             )
+            yield s
 
     def copy(self) -> None:
-        self.find()
-        self.match()
-        for count, source in enumerate(self.sources, start=1):
+        sources = list(self.sources)
+        for count, source in enumerate(sources, start=1):
             logging.info(
                 f"{source.name} -> {source.destination.name} "
-                f"[{count}/{len(self.sources)}]"
+                f"[{count}/{len(sources)}]"
             )
             if not self.options.no_act:
                 shutil.copy(source.path, source.destination / source.name)
