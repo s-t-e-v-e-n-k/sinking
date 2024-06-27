@@ -68,7 +68,7 @@ def parser() -> argparse.ArgumentParser:
         "--verbose",
         action="store_true",
         default=False,
-        help="increase debug printing",
+        help="show debug messages",
     )
     return parser
 
