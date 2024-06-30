@@ -46,7 +46,7 @@ def parser() -> argparse.ArgumentParser:
         "--pattern",
         action="store",
         default="*.mkv",
-        help="pattern to match on",
+        help="pattern to match on (default: *.mkv)",
     )
     parser.add_argument(
         "-s",
