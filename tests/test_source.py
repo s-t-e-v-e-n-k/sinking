@@ -32,9 +32,9 @@ class TestSourceFile(unittest.TestCase):
         s = SourceFile(pathlib.Path("/foo/FooBar.S04E19/FooBar.S04E19.Quux"))
         self.assertEqual(s.pattern, "FooBar.S04E")
 
-    def test_destination_is_unset(self):
+    def test_default_destination_is_cwd(self):
         s = SourceFile(pathlib.Path("/foo/bar/baz"))
-        self.assertIsNone(s.destination)
+        self.assertEqual(s.destination, pathlib.Path(""))
 
     def test_destination_can_be_set(self):
         dest = pathlib.Path("/dev")

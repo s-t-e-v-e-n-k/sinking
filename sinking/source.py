@@ -1,7 +1,6 @@
 import dataclasses
 import pathlib
 import re
-from typing import Optional
 
 from .options import Options
 from .utils import create_pattern
@@ -10,8 +9,8 @@ from .utils import create_pattern
 @dataclasses.dataclass
 class SourceFile:
     path: pathlib.Path
-    destination: Optional[pathlib.Path] = dataclasses.field(
-        repr=False, default=None
+    destination: pathlib.Path = dataclasses.field(
+        repr=False, default=pathlib.Path("")
     )
 
     @property
