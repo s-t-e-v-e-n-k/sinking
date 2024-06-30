@@ -15,7 +15,7 @@ class DestinationMatcher:
 
     def walk(self) -> None:
         for path in self.options.destination.rglob("tmp.*/*"):
-            if (p := create_pattern(path.parts[-1])) is not None:
+            if (p := create_pattern(path.parts[-1])) != "":
                 self.destinations[p] = path.parent
 
     def match(self, pattern: str) -> pathlib.Path:

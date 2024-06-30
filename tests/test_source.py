@@ -26,7 +26,7 @@ class TestSourceFile(unittest.TestCase):
 
     def test_pattern_no_season(self):
         s = SourceFile(pathlib.Path("/foo/foo"))
-        self.assertIsNone(s.pattern)
+        self.assertEqual(s.pattern, "")
 
     def test_pattern_with_season(self):
         s = SourceFile(pathlib.Path("/foo/FooBar.S04E19/FooBar.S04E19.Quux"))

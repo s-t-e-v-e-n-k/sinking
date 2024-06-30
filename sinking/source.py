@@ -21,7 +21,7 @@ class SourceFile:
         return self.path.name
 
     @property
-    def pattern(self) -> Optional[str]:
+    def pattern(self) -> str:
         return create_pattern(self.name)
 
     @property
