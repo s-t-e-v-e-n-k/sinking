@@ -24,14 +24,19 @@ class DestinationMatcher:
         return self.destinations[pattern]
 
     def new_dir(self) -> pathlib.Path:
+        meth = "fake_dir" if self.options.no_act else "real_dir"
+        value: pathlib.Path = getattr(self, meth)()
+        return value
+
+    def fake_dir(self) -> pathlib.Path:
         alphabet = string.ascii_lowercase + string.digits + "_"
-        if self.options.no_act:
-            dir_part = "".join(secrets.choice(alphabet) for i in range(8))
-            new_dir = self.options.destination / f"tmp.{dir_part}"
-        else:
-            tmp = tempfile.mkdtemp(
-                prefix="tmp.", dir=self.options.destination
-            )
-            new_dir = pathlib.Path(tmp)
-            new_dir.chmod(0o755)
+        dir_part = "".join(secrets.choice(alphabet) for i in range(8))
+        new_dir: pathlib.Path = self.options.destination / f"tmp.{dir_part}"
+        return new_dir
+
+    def real_dir(self) -> pathlib.Path:
+        new_dir = pathlib.Path(
+            tempfile.mkdtemp(prefix="tmp.", dir=self.options.destination)
+        )
+        new_dir.chmod(0o755)
         return new_dir
