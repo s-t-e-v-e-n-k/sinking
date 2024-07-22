@@ -10,6 +10,7 @@ class TestSourceFile(unittest.TestCase):
         self.options = Options()
         self.options.excludes = []
         self.options.includes = []
+        self.options.rename = True
 
     def tearDown(self):
         self.options.clear()
@@ -18,6 +19,11 @@ class TestSourceFile(unittest.TestCase):
         s = SourceFile(pathlib.Path("/foo/bar/baz/baz"))
         self.assertEqual(s.name, "baz")
         self.assertFalse(s.needs_rename)
+
+    def test_name_with_rename_false(self):
+        self.options.rename = False
+        s = SourceFile(pathlib.Path("/foo/bar/baz/bar"))
+        self.assertEqual(s.name, "bar")
 
     def test_needs_rename(self):
         s = SourceFile(pathlib.Path("/foo/bar/baz/foo"))

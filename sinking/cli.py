@@ -65,9 +65,9 @@ def parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "-r",
         "--rename",
-        action="store_true",
+        action="store_false",
         default=True,
-        help="rename files to match directory name",
+        help="do not rename files to match directory name",
     )
     parser.add_argument(
         "-v",

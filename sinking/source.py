@@ -15,7 +15,8 @@ class SourceFile:
 
     @property
     def name(self) -> str:
-        if self.needs_rename:
+        o = Options()
+        if o.rename and self.needs_rename:
             return f"{self.path.parts[-2]}{self.path.suffix}"
         return self.path.name
 

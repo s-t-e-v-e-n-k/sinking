@@ -42,6 +42,7 @@ class TestCopy(unittest.TestCase):
             "pattern": "*.bar",
             "includes": [],
             "excludes": [],
+            "rename": True,
         }
         for key in args:
             setattr(self.options, key, args.get(key))
