@@ -25,6 +25,12 @@ class TestSourceFile(unittest.TestCase):
         s = SourceFile(pathlib.Path("/foo/bar/baz/bar"))
         self.assertEqual(s.name, "bar")
 
+    def test_name_with_spaces(self):
+        p = pathlib.Path("/foo/bar/FooBarBaz.S03E05/FooBarBaz S03E05")
+        s = SourceFile(p)
+        self.assertFalse(s.needs_rename)
+        self.assertEqual(s.name, "FooBarBaz.S03E05")
+
     def test_needs_rename(self):
         s = SourceFile(pathlib.Path("/foo/bar/baz/foo"))
         self.assertEqual(s.name, "baz")

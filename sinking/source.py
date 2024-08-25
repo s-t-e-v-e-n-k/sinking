@@ -16,9 +16,10 @@ class SourceFile:
     @property
     def name(self) -> str:
         o = Options()
+        name = self.path.name
         if o.rename and self.needs_rename:
-            return f"{self.path.parts[-2]}{self.path.suffix}"
-        return self.path.name
+            name = f"{self.path.parts[-2]}{self.path.suffix}"
+        return name.replace(" ", ".")
 
     @property
     def pattern(self) -> str:
