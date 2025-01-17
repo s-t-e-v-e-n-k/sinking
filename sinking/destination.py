@@ -13,6 +13,10 @@ class DestinationMatcher:
         self.destinations: dict[str, pathlib.Path] = {}
         self.walk()
 
+    def _randstr(self, length: int) -> str:
+        alphabet = string.ascii_lowercase + string.digits + "_"
+        return "".join(secrets.choice(alphabet) for i in range(length))
+
     def walk(self) -> None:
         for path in self.options.destination.rglob("tmp.*/*"):
             if (p := create_pattern(path.parts[-1])) != "":
@@ -29,14 +33,17 @@ class DestinationMatcher:
         return value
 
     def fake_dir(self) -> pathlib.Path:
-        alphabet = string.ascii_lowercase + string.digits + "_"
-        dir_part = "".join(secrets.choice(alphabet) for i in range(8))
+        dir_part = self._randstr(10)
         new_dir: pathlib.Path = self.options.destination / f"tmp.{dir_part}"
         return new_dir
 
     def real_dir(self) -> pathlib.Path:
+        # mktempd doesn't match mktemp(1), add two characters as a suffix
+        suffix = self._randstr(2)
         new_dir = pathlib.Path(
-            tempfile.mkdtemp(prefix="tmp.", dir=self.options.destination)
+            tempfile.mkdtemp(
+                suffix=suffix, prefix="tmp.", dir=self.options.destination
+            )
         )
         new_dir.chmod(0o755)
         return new_dir

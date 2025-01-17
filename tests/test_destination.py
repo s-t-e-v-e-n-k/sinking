@@ -19,6 +19,10 @@ class TestDestination(unittest.TestCase):
         self.tempdir.cleanup()
         self.options.clear()
 
+    def test_randstr(self):
+        d = DestinationMatcher()
+        self.assertEqual(len(d._randstr(4)), 4)
+
     def test_destinations_no_dirs(self):
         d = DestinationMatcher()
         self.assertEqual(d.destinations, {})
