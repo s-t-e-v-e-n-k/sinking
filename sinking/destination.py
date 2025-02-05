@@ -14,7 +14,7 @@ class DestinationMatcher:
         self.walk()
 
     def _randstr(self, length: int) -> str:
-        alphabet = string.ascii_lowercase + string.digits + "_"
+        alphabet = string.ascii_letters + string.digits + "_"
         return "".join(secrets.choice(alphabet) for i in range(length))
 
     def walk(self) -> None:
