@@ -31,6 +31,12 @@ class TestSourceFile(unittest.TestCase):
         self.assertFalse(s.needs_rename)
         self.assertEqual(s.name, "FooBarBaz.S03E05")
 
+    def test_name_with_xpost(self):
+        p = pathlib.Path("/foo/bar/Baz.S08E02/Baz.S08E02.mkv-xpost.mkv")
+        s = SourceFile(p)
+        self.assertFalse(s.needs_rename)
+        self.assertEqual(s.name, "Baz.S08E02.mkv")
+
     def test_needs_rename(self):
         s = SourceFile(pathlib.Path("/foo/bar/baz/foo"))
         self.assertEqual(s.name, "baz")

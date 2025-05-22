@@ -1,4 +1,5 @@
 import dataclasses
+import os.path
 import pathlib
 import re
 
@@ -19,7 +20,7 @@ class SourceFile:
         name = self.path.name
         if o.rename and self.needs_rename:
             name = f"{self.path.parts[-2]}{self.path.suffix}"
-        return name.replace(" ", ".")
+        return self._transform_name(name)
 
     @property
     def pattern(self) -> str:
@@ -28,6 +29,14 @@ class SourceFile:
     @property
     def needs_rename(self) -> bool:
         return self.path.parts[-2][:6] != self.path.parts[-1][:6]
+
+    def _transform_name(self, name: str) -> str:
+        name = name.replace(" ", ".")
+        _, ext = os.path.splitext(name)
+        pattern = f"{ext}-xpost{ext}"
+        if pattern in name:
+            name = name.replace(pattern, ext)
+        return name
 
     @property
     def excluded(self) -> bool:
