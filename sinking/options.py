@@ -1,8 +1,13 @@
+from __future__ import annotations
+
 from types import SimpleNamespace
+from typing import ClassVar
 
 
 class Options(SimpleNamespace):
-    def __new__(cls) -> "Options":
+    instance: ClassVar[Options]
+
+    def __new__(cls) -> Options:
         if not hasattr(cls, "instance"):
             cls.instance = super().__new__(cls)
         return cls.instance
